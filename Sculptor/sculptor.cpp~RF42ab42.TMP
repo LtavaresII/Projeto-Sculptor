@@ -1,0 +1,112 @@
+#include "sculptor.h"
+#include <iostream>
+#include <math.h>
+#include <stdlib.h>
+#include <assert.h>
+
+Sculptor::Sculptor(int _nx, int _ny, int _nz)
+{
+    int i,j,k;
+    nx = _nx;
+    ny = _ny;
+    nz = _nz;
+
+    if(nx<=0 || ny<=0 || nz<=0 ){
+        nx=ny=nz=0;
+    }
+
+    // Cria a matriz Voxel em 3 dimensões para cria um solido
+    v = new Voxel**[_nx];
+    v[0] = new Voxel*[_nx*_ny];
+    v[0][0] = new Voxel[_nx*_ny*_nz];
+
+    for(i=1;i<nx;i++){
+        v[i] = v[i-1] + ny;
+        for(j=1;j<ny;j++){
+            v[0][j] = v[0][i-1] + nx;
+        }
+    }
+
+    for(i=0;i<nx;i++){
+        for(j=0;j<ny;j++){
+            for(k=0;k<nz;k++){
+                v[i][j][k].isOn=false;
+            }
+        }
+    }
+
+}
+
+Sculptor::~Sculptor()
+{
+    // Deleta a matriz Voxel
+    delete[] v[0][0];
+    delete[] v[0];
+    delete[] v;
+}
+
+void Sculptor::setColor(float r, float g, float b, float alpha)
+{
+    // Cores e a opacidade do solido
+    rc= r;
+    gc= g;
+    bc= b;
+    a= alpha;
+}
+
+void Sculptor::putVoxel(int x, int y, int z)
+{
+    // Atribui as cores e opacidade para cada voxel
+    if((x>=nx)||(y>=ny)||(z>=nz)){
+        return;
+    }else if((x<0)||(y<0)||(z<0)){
+        return;
+    }else{
+        v[z][y][x].isOn = true;
+        v[z][y][x].r = rc;
+        v[z][y][x].g = gc;
+        v[z][y][x].b = bc;
+        v[z][y][x].a = a;
+    }
+
+}
+
+void Sculptor::cutVoxel(int x, int y, int z)
+{
+
+}
+
+void Sculptor::putBox(int x0, int x1, int y0, int y1, int z0, int z1)
+{
+
+}
+
+void Sculptor::cutBox(int x0, int x1, int y0, int y1, int z0, int z1)
+{
+
+}
+
+void Sculptor::putSphere(int xcenter, int ycenter, int zcenter, int radius)
+{
+
+}
+
+void Sculptor::cutSphere(int xcenter, int ycenter, int zcenter, int radius)
+{
+
+}
+
+void Sculptor::putEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int ry, int rz)
+{
+
+}
+
+void Sculptor::cutEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int ry, int rz)
+{
+
+}
+
+void Sculptor::writeOFF(char *filename)
+{
+
+}
